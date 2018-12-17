@@ -7,7 +7,25 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+var bodyParser = require('body-parser');
+var cors = require('cors');
+var passport = require('passport');
+var mongoose = require('mongoose');
+var db_config = require('./config/database');
+
+mongoose.connect(db_config.database);
+
+mongoose.connection.on('connected', () => {
+  console.log('Connected to database ' + db_config.database);
+});
+
 var app = express();
+
+// cross server request middleware
+app.use(cors());
+
+// body parser
+app.use(bodyParser.json());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -17,6 +35,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);

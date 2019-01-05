@@ -13,7 +13,7 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var db_config = require('./config/database');
 
-mongoose.connect(db_config.database);
+mongoose.connect(process.env.MONGOLAB_URI);
 
 mongoose.connection.on('connected', () => {
   console.log('Connected to database ' + db_config.database);

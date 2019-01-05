@@ -11,12 +11,17 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 var passport = require('passport');
 var mongoose = require('mongoose');
-var db_config = require('./config/database');
 
 mongoose.connect(process.env.MONGOLAB_URI);
 
+//on connect
 mongoose.connection.on('connected', () => {
-  console.log('Connected to database ' + db_config.database);
+  console.log('Connected to database.');
+});
+
+//on error connecting
+mongoose.connection.on('error', (err) => {
+  console.log('Error connecting to database:' + err);
 });
 
 var app = express();

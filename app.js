@@ -12,6 +12,11 @@ var cors = require('cors');
 var passport = require('passport');
 var mongoose = require('mongoose');
 
+//first check if env vars are set
+//TODO - add the check
+//JWT_SECRET
+//MONGOLAB_URI
+
 mongoose.connect(process.env.MONGOLAB_URI);
 
 //on connect
@@ -29,8 +34,14 @@ var app = express();
 // cross server request middleware
 app.use(cors());
 
-// body parser
+// body parser middleware
 app.use(bodyParser.json());
+
+//passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./config/passport')(passport);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

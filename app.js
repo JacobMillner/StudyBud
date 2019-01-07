@@ -75,3 +75,5 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+//log our port
+console.log("Express server listening on port %d", app.address().port)

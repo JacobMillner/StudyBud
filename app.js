@@ -16,12 +16,12 @@ mongoose.connect(process.env.MONGOLAB_URI);
 
 //on connect
 mongoose.connection.on('connected', () => {
-  console.log('Connected to database.');
+  console.log('Connected to database.' );
 });
 
 //on error connecting
 mongoose.connection.on('error', (err) => {
-  console.log('Error connecting to database:' + err);
+  console.log('Error connecting to database '+ process.env.MONGOLAB_URI +':' + err);
 });
 
 var app = express();

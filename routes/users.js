@@ -13,7 +13,7 @@ router.post('/register', (req, res, next) => {
     password: req.body.password
   });
 
-  User.addUser(newUser, (err, user) => {
+  User.AddUser(newUser, (err, user) => {
     if(err){
       res.json({ succsess: false, msg: 'Failed to register user.'});
     } else {
@@ -24,7 +24,38 @@ router.post('/register', (req, res, next) => {
 
 // auth
 router.post('/authenticate', (req, res, next) => {
-  res.send('AUTHENTICATE');
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.GetUserByUsername(username, (err, user) => {
+    if (err) throw err;
+    if (!user) {
+      return res.json({ succsess: false, msg: 'User not found.'});
+    }
+
+    //check the request password vs the password stored in the db
+    User.ComparePassword(password, user.password, (err, isMatch) => {
+      if(err) throw err;
+      if (isMatch) {
+        const token = jwt.sign(user, process.env.JWT_SECRET, {
+          expiresIn: 604800 //expires in 1 week
+        });
+
+        res.json({
+          succsess: true,
+          token: 'JWT ' + token,
+          user: {
+            id: user._id,
+            name: user.name,
+            username: user.username,
+            email: user.email
+          }
+        });
+      } else {
+        return res.json({ succsess: false, msg: 'Username and password do not match.'});
+      }
+    });
+  });
 });
 
 // profile

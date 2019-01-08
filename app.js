@@ -17,16 +17,16 @@ var mongoose = require('mongoose');
 //JWT_SECRET
 //MONGOLAB_URI
 
-mongoose.connect(process.env.MONGOLAB_URI);
+mongoose.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true });
 
 //on connect
 mongoose.connection.on('connected', () => {
-  console.log('Connected to database.' );
+  console.log('Connection to our mongodb successful.' );
 });
 
 //on error connecting
 mongoose.connection.on('error', (err) => {
-  console.log('Error connecting to database '+ process.env.MONGOLAB_URI +':' + err);
+  console.log('Error connecting to mongodb '+ process.env.MONGOLAB_URI +':' + err);
 });
 
 var app = express();
@@ -74,6 +74,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+var port = process.env.PORT || 6969;
+
+app.listen(port, function () {
+  console.log('Study-bud listening to port: ' + port + '!');
+});
+
 module.exports = app;
-//log our port
-console.log("Express server listening on port %d", app.address().port)

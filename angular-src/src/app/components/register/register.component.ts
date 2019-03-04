@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ValidateService } from '../../services/validate.service';
+import { AuthService } from '../../services/auth.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +15,11 @@ export class RegisterComponent implements OnInit {
   email: String;
   password: String;
 
-  constructor(private validateService: ValidateService, private flashMessage: FlashMessagesService) { }
+  constructor(
+    private validateService: ValidateService, 
+    private flashMessage: FlashMessagesService,
+    private authService: AuthService,
+    private router: Router) { }
 
   ngOnInit() {
   }
@@ -36,6 +42,18 @@ export class RegisterComponent implements OnInit {
       this.flashMessage.show('Please enter a valid email.', {cssClass: 'alert-danger', timeout: 3000});
       return false;
     }
-  }
 
+    //Regiser User
+    this.authService.registerUser(user).subscribe(data => {
+      //im pretty sure i'm doing something wrong here but it works...
+      let resObject = JSON.parse((data as any)._body);
+      if(resObject.success) {
+        this.flashMessage.show('User registration successful.', {cssClass: 'alert-success', timeout: 3000});
+        this.router.navigate(['/login']);
+      } else {
+        this.flashMessage.show('User registration unsuccessful.', {cssClass: 'alert-danger', timeout: 3000});
+        this.router.navigate(['/register']);
+      }
+    });
+  }
 }

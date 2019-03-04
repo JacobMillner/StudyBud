@@ -15,10 +15,11 @@ router.post('/register', (req, res, next) => {
 
   User.AddUser(newUser, (err, user) => {
     if(err){
-      res.json({ succsess: false, msg: 'Failed to register user.'});
+      res.json({ success: false, msg: 'Failed to register user.'});
     } else {
-      res.json({ succsess: true, msg: 'User registered.'});
+      res.json({ success: true, msg: 'User registered.'});
     }
+    console.log(res.json.body);
   });
 });
 
@@ -30,7 +31,7 @@ router.post('/authenticate', (req, res, next) => {
   User.GetUserByUsername(username, (err, user) => {
     if (err) throw err;
     if (!user) {
-      return res.json({ succsess: false, msg: 'User not found.'});
+      return res.json({ success: false, msg: 'User not found.'});
     }
 
     //check the request password vs the password stored in the db
@@ -42,7 +43,7 @@ router.post('/authenticate', (req, res, next) => {
         });
 
         res.json({
-          succsess: true,
+          success: true,
           token: 'JWT ' + token,
           user: {
             id: user._id,
@@ -52,7 +53,7 @@ router.post('/authenticate', (req, res, next) => {
           }
         });
       } else {
-        return res.json({ succsess: false, msg: 'Username and password do not match.'});
+        return res.json({ success: false, msg: 'Username and password do not match.'});
       }
     });
   });

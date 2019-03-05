@@ -11,11 +11,15 @@
           [routerLink]="['/']">Home</a></li>
     </ul>
     <ul class=" navbar-nav mr-sm-2">
-      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a class="nav-link"
+      <li *ngIf="authService.loggedIn()" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a class="nav-link"
+          [routerLink]="['/dashboard']">Dashboard</a></li>
+      <li *ngIf="authService.loggedIn()" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a class="nav-link"
+          [routerLink]="['/profile']">Profile</a></li>
+      <li *ngIf="!authService.loggedIn()" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a class="nav-link"
           [routerLink]="['/login']">Login</a></li>
-      <li class="nav-item" r><a class="nav-link"
-          (click)="onLogoutClick()" href="#">Logout</a></li>
-      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a class="nav-link" [routerLink]="['/register']">Register</a></li>
+      <li *ngIf="authService.loggedIn()" class="nav-item" r><a class="nav-link" (click)="onLogoutClick()" href="#">Logout</a></li>
+      <li *ngIf="!authService.loggedIn()" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a class="nav-link"
+          [routerLink]="['/register']">Register</a></li>
     </ul>
   </div>
 </nav>

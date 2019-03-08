@@ -14,12 +14,11 @@ router.post('/register', (req, res, next) => {
   });
 
   User.AddUser(newUser, (err, user) => {
-    if(err){
-      res.json({ success: false, msg: 'Failed to register user.'});
+    if (err) {
+      res.json({ success: false, msg: 'Failed to register user.' });
     } else {
-      res.json({ success: true, msg: 'User registered.'});
+      res.json({ success: true, msg: 'User registered.' });
     }
-    console.log(res.json.body);
   });
 });
 
@@ -31,14 +30,14 @@ router.post('/authenticate', (req, res, next) => {
   User.GetUserByUsername(username, (err, user) => {
     if (err) throw err;
     if (!user) {
-      return res.json({ success: false, msg: 'User not found.'});
+      return res.json({ success: false, msg: 'User not found.' });
     }
 
     //check the request password vs the password stored in the db
     User.ComparePassword(password, user.password, (err, isMatch) => {
-      if(err) throw err;
+      if (err) throw err;
       if (isMatch) {
-        const token = jwt.sign({data: user}, process.env.JWT_SECRET, {
+        const token = jwt.sign({ data: user }, process.env.JWT_SECRET, {
           expiresIn: 604800 //expires in 1 week
         });
 
@@ -53,15 +52,15 @@ router.post('/authenticate', (req, res, next) => {
           }
         });
       } else {
-        return res.json({ success: false, msg: 'Username and password do not match.'});
+        return res.json({ success: false, msg: 'Username and password do not match.' });
       }
     });
   });
 });
 
 // profile
-router.get('/profile', passport.authenticate('jwt', {session: false}) , (req, res, next) => {
-  res.json({user: req.user});
+router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+  res.json({ user: req.user });
 });
 
 module.exports = router;

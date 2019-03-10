@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 //activity schema
 const ActivitySchema = mongoose.Schema({
@@ -18,26 +19,19 @@ const ActivitySchema = mongoose.Schema({
 const Activity = module.exports = mongoose.model('Activity', ActivitySchema);
 
 module.exports.CreateActivity = function (newActivity, callback) {
-    checkDuplicateActivity(newActivity.name, newActivity.user, (isDuplicate) => {
-        if(isDuplicate) {
-            err = "An activity with that name already exists for this user.";
-            callback(err, null);
-        } else {
-            newActivity.save(callback);
-        }
-    });
+    newActivity.save(callback);
 }
 
-function checkDuplicateActivity (name, user, callback) {
-    const query = { name: name, user: user };
+module.exports.IsNotDuplicateActivity = function (name, user, callback) {
+    const query = { name: name, user: user.username };
+    console.log(query);
     Activity.count(query, (err, count) => {
         if (err) throw err;
-
         if (count > 0) {
-            callback(true);
+            callback(false);
         }
         else {
-            callback(false);
+            callback(true);
         }
     });
 }

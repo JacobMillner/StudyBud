@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 //subject schema
 const ActivityEntrySchema = mongoose.Schema({

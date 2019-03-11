@@ -26,11 +26,34 @@ router.post('/create', (req, res, next) => {
           } else {
             res.json({ success: true, msg: 'Activity created.' });
           }
-          console.log(res.json.body);
         });
       } else {
         res.json({ success: false, msg: 'An Activity with that name already exists for this user.' });
       }
+    });
+  });
+});
+
+// update
+router.post('/update', (req, res, next) => {
+
+});
+
+// delete
+router.post('/delete', (req, res, next) => {
+  User.GetUserByUsername(req.body.username, (err, user) => {
+    if (err) throw err;
+    if (!user) {
+      return res.json({ success: false, msg: 'User not found.' });
+    }
+    Activity.GetActivityByName(req.body.name, user, (err, activity) => {
+      if (err) throw err;
+      if (!activity) {
+        return res.json({ success: false, msg: 'Activity not found.' });
+      }
+      Activity.DeleteActivity(activity, () => {
+
+      });
     });
   });
 });

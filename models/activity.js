@@ -19,6 +19,10 @@ module.exports.CreateActivity = function (newActivity, callback) {
     newActivity.save(callback);
 }
 
+module.exports.GetActivityByName = function (activityName, user, callback) {
+    const query = { name: activityName, user: user };
+    Activity.findOne(query, callback);
+}
 module.exports.IsNotDuplicateActivity = function (name, user, callback) {
     const query = { name: name, user: user };
     console.log(query);
@@ -31,4 +35,12 @@ module.exports.IsNotDuplicateActivity = function (name, user, callback) {
             callback(true);
         }
     });
+}
+
+module.exports.UpdateActivity = function () {
+
+}
+
+module.exports.DeleteActivity = function (activity, callback) {
+    Activity.remove(activity, callback);
 }

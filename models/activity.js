@@ -3,9 +3,6 @@ const Schema = mongoose.Schema;
 
 //activity schema
 const ActivitySchema = mongoose.Schema({
-    _id: {
-        type: Schema.Types.ObjectId
-    },
     name: {
         type: String,
         required: true
@@ -23,9 +20,9 @@ module.exports.CreateActivity = function (newActivity, callback) {
 }
 
 module.exports.IsNotDuplicateActivity = function (name, user, callback) {
-    const query = { name: name, user: user.username };
+    const query = { name: name, user: user };
     console.log(query);
-    Activity.count(query, (err, count) => {
+    Activity.countDocuments(query, (err, count) => {
         if (err) throw err;
         if (count > 0) {
             callback(false);

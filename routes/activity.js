@@ -22,7 +22,7 @@ router.post('/create', (req, res, next) => {
       if (isNotDupe) {
         Activity.CreateActivity(newActivity, (err, activity) => {
           if (err) {
-            res.json({ success: false, msg: 'Failed to create activity.' });
+            res.json({ success: false, msg: 'Failed to create activity: ' + err });
           } else {
             res.json({ success: true, msg: 'Activity created.' });
           }

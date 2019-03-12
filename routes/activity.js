@@ -40,6 +40,7 @@ router.post('/update', (req, res, next) => {
 });
 
 // delete
+// req: username, name
 router.post('/delete', (req, res, next) => {
   User.GetUserByUsername(req.body.username, (err, user) => {
     if (err) throw err;
@@ -51,8 +52,12 @@ router.post('/delete', (req, res, next) => {
       if (!activity) {
         return res.json({ success: false, msg: 'Activity not found.' });
       }
-      Activity.DeleteActivity(activity, () => {
-
+      Activity.DeleteActivity(activity, (err) => {
+        if (err) {
+          return res.json({ success: false, msg: err });
+        } else {
+          return res.json({ success: true, msg: 'Activity Deleted.' });
+        }
       });
     });
   });

@@ -42,5 +42,5 @@ module.exports.UpdateActivity = function () {
 }
 
 module.exports.DeleteActivity = function (activity, callback) {
-    Activity.remove(activity, callback);
+    Activity.deleteOne(activity, callback);
 }

@@ -15,14 +15,25 @@ const ActivitySchema = mongoose.Schema({
 
 const Activity = module.exports = mongoose.model('Activity', ActivitySchema);
 
+// crud operations
 module.exports.CreateActivity = function (newActivity, callback) {
     newActivity.save(callback);
+}
+
+module.exports.UpdateActivity = function (activityToUpdate, newActivityValues,callback) {
+    Activity.updateOne(newActivityValues, activityToUpdate, callback);
+}
+
+module.exports.DeleteActivity = function (activity, callback) {
+    Activity.deleteOne(activity, callback);
 }
 
 module.exports.GetActivityByName = function (activityName, user, callback) {
     const query = { name: activityName, user: user };
     Activity.findOne(query, callback);
 }
+
+// misc
 module.exports.IsNotDuplicateActivity = function (name, user, callback) {
     const query = { name: name, user: user };
     console.log(query);
@@ -35,12 +46,4 @@ module.exports.IsNotDuplicateActivity = function (name, user, callback) {
             callback(true);
         }
     });
-}
-
-module.exports.UpdateActivity = function () {
-
-}
-
-module.exports.DeleteActivity = function (activity, callback) {
-    Activity.deleteOne(activity, callback);
 }

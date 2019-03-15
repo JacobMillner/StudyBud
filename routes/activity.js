@@ -35,19 +35,38 @@ router.post('/create', (req, res, next) => {
 });
 
 // update
+//req: username, activityName, newActivityValues
 router.post('/update', (req, res, next) => {
-
-});
-
-// delete
-// req: username, name
-router.post('/delete', (req, res, next) => {
   User.GetUserByUsername(req.body.username, (err, user) => {
     if (err) throw err;
     if (!user) {
       return res.json({ success: false, msg: 'User not found.' });
     }
     Activity.GetActivityByName(req.body.name, user, (err, activity) => {
+      if (err) throw err;
+      if (!activity) {
+        return res.json({ success: false, msg: 'Activity not found.' });
+      }
+      Activity.UpdateActivity(activity, req.body.newActivityValues, (err) => {
+        if (err) {
+          return res.json({ success: false, msg: err });
+        } else {
+          return res.json({ success: true, msg: 'Activity updated.' });
+        }
+      });
+    });
+  });
+});
+
+// delete
+// req: username, activityName
+router.post('/delete', (req, res, next) => {
+  User.GetUserByUsername(req.body.username, (err, user) => {
+    if (err) throw err;
+    if (!user) {
+      return res.json({ success: false, msg: 'User not found.' });
+    }
+    Activity.GetActivityByName(req.body.activityName, user, (err, activity) => {
       if (err) throw err;
       if (!activity) {
         return res.json({ success: false, msg: 'Activity not found.' });

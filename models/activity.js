@@ -20,8 +20,8 @@ module.exports.CreateActivity = function (newActivity, callback) {
     newActivity.save(callback);
 }
 
-module.exports.UpdateActivity = function (activityToUpdate, newActivityValues,callback) {
-    Activity.updateOne(newActivityValues, activityToUpdate, callback);
+module.exports.UpdateActivity = function (activityToUpdate, newActivityValues, callback) {
+    activityToUpdate.update(newActivityValues, callback);
 }
 
 module.exports.DeleteActivity = function (activity, callback) {
@@ -36,7 +36,6 @@ module.exports.GetActivityByName = function (activityName, user, callback) {
 // misc
 module.exports.IsNotDuplicateActivity = function (name, user, callback) {
     const query = { name: name, user: user };
-    console.log(query);
     Activity.countDocuments(query, (err, count) => {
         if (err) throw err;
         if (count > 0) {

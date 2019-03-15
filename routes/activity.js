@@ -5,19 +5,18 @@ const Activity = require('../models/activity');
 const User = require('../models/user');
 
 // create
+//req: username, activityName
 router.post('/create', (req, res, next) => {
 
-  User.GetUserByUsername(req.body.user, (err, user) => {
+  User.GetUserByUsername(req.body.username, (err, user) => {
     if (err) throw err;
     if (!user) {
       return res.json({ success: false, msg: 'User not found.' });
     }
-
     let newActivity = new Activity({
-      name: req.body.name,
+      name: req.body.activityName,
       user: user
     });
-
     Activity.IsNotDuplicateActivity(newActivity.name, newActivity.user, (isNotDupe) => {
       if (isNotDupe) {
         Activity.CreateActivity(newActivity, (err, activity) => {
@@ -42,7 +41,7 @@ router.post('/update', (req, res, next) => {
     if (!user) {
       return res.json({ success: false, msg: 'User not found.' });
     }
-    Activity.GetActivityByName(req.body.name, user, (err, activity) => {
+    Activity.GetActivityByName(req.body.activityName, user, (err, activity) => {
       if (err) throw err;
       if (!activity) {
         return res.json({ success: false, msg: 'Activity not found.' });

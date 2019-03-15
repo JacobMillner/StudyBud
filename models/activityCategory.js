@@ -6,7 +6,7 @@ const ActivityCategorySchema = mongoose.Schema({
     _id: {
         type: Schema.Types.ObjectId
     },
-    activityType: {
+    activityTypeName: {
         type: String,
         required: true
     },
@@ -20,4 +20,25 @@ const ActivityCategorySchema = mongoose.Schema({
     }
 }, { timestamps: true });
 
-const Subject = module.exports = mongoose.model('ActivityCategory', ActivityCategorySchema);
+// make sure the user doesn't have more than one activity type of this name
+ActivityCategorySchema.index({ activityType: 1, activity: 1, user: 1 }, { unique: true });
+
+const ActivityCategory = module.exports = mongoose.model('ActivityCategory', ActivityCategorySchema);
+
+// crud operations
+module.exports.CreateActivityCat = function (newActivityCat, callback) {
+    newActivityCat.save(callback);
+}
+
+module.exports.UpdateActivityCat = function (activityCatToUpdate, newActivityCatValues, callback) {
+    activityCatToUpdate.update(newActivityCatValues, callback);
+}
+
+module.exports.DeleteActivityCat = function (activityCat, callback) {
+    ActivityCategory.deleteOne(activityCat, callback);
+}
+
+module.exports.GetActivityCatByActivityType = function (activityCatName, user, callback) {
+    const query = { activityTypeName: activityCatName, user: user };
+    ActivityCategory.findOne(query, callback);
+}
